@@ -136,11 +136,31 @@
         .stage { width: 100%; aspect-ratio: 16 / 9; max-width: 100%; }
         .stage svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
-        /* Degraus de eficiência (slide 7) */
-        .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); align-items: end; height: calc(var(--u) * 26); }
+        .label { font-size: var(--fs-kicker); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+        .label.blue { color: var(--blue); }
+        .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+        .fact { border-top: 1px solid var(--rule); padding-top: calc(var(--u) * 1.1); display: flex; flex-direction: column; gap: calc(var(--u) * 0.5); }
+        .fact p { font-size: var(--fs-body); line-height: 1.48; color: var(--muted); }
+
+        /* Etiquetas de informação caindo nos degraus */
+        .ichips { display: flex; flex-wrap: wrap; gap: calc(var(--u) * 0.5); margin-top: auto; }
+        .ichip {
+            font: 600 var(--fs-small) var(--sans); letter-spacing: 0.03em; color: var(--blue);
+            background: var(--paper); border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 999px; padding: 0.2em 0.75em;
+            animation: ichip-drop 8s ease-in-out infinite both;
+        }
+        .ichip.c2 { animation-name: ichip-drop-2; }
+        .ichip.c3 { animation-name: ichip-drop-3; }
+        @keyframes ichip-drop   { 0% { opacity: 0; transform: translateY(-18px); } 8%, 86% { opacity: 1; transform: none; } 94%, 100% { opacity: 0; transform: none; } }
+        @keyframes ichip-drop-2 { 0%, 22% { opacity: 0; transform: translateY(-18px); } 30%, 86% { opacity: 1; transform: none; } 94%, 100% { opacity: 0; transform: none; } }
+        @keyframes ichip-drop-3 { 0%, 44% { opacity: 0; transform: translateY(-18px); } 52%, 86% { opacity: 1; transform: none; } 94%, 100% { opacity: 0; transform: none; } }
+
+        /* Degraus de eficiência */
+        .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); align-items: end; height: calc(var(--u) * 30); }
         .step { color: #fff; border-radius: 4px 4px 0 0; padding: calc(var(--u) * 1.8); display: flex; flex-direction: column; gap: calc(var(--u) * 0.6); justify-content: flex-start; transform-origin: bottom; }
-        .step:nth-child(1) { height: 45%; background: #6F96C4; }
-        .step:nth-child(2) { height: 72%; background: #4A7DB7; }
+        .step:nth-child(1) { height: 52%; background: #6F96C4; }
+        .step:nth-child(2) { height: 76%; background: #4A7DB7; }
         .step:nth-child(3) { height: 100%; background: var(--blue); }
         .step h3 { color: #fff; }
         .step p { font-size: var(--fs-body); line-height: 1.4; color: rgba(255, 255, 255, 0.92); }
@@ -204,6 +224,7 @@
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             .rise, .step { transition: none !important; opacity: 1 !important; transform: none !important; }
+            .ichip { animation: none !important; opacity: 1 !important; }
         }
 
         /* ---------- Celular em pé: os slides viram uma página que rola ---------- */
@@ -217,7 +238,7 @@
             .slide { height: auto; min-height: 100svh; padding-bottom: 4.5rem; }
             .slide-foot { bottom: 1.1rem; border-top: 0; }
             .slide-foot span:last-child { display: none; }
-            .cols-2, .cols-3, .cols-4, .split, .timeline { grid-template-columns: 1fr; }
+            .cols-2, .cols-3, .cols-4, .split, .timeline, .facts { grid-template-columns: 1fr; }
             .timeline { gap: 1.2rem; }
             .timeline::before { display: none; }
             .steps { height: auto; grid-template-columns: 1fr; }
@@ -239,14 +260,13 @@
             <div class="stack">
                 <p class="kicker rise">Revista Contabilidade &amp; Finanças, USP · n. 37 · 2005</p>
                 <h1 class="rise d1">Mercado de Capitais: <span class="blue">Racionalidade</span> versus <span class="orange">Emoção</span></h1>
-                <p class="lead rise d2">José Odálio dos Santos e José Augusto Rodrigues dos Santos</p>
-                <p class="body rise d3 rule-top"><strong>Apresentação:</strong> Felipe Cruz e Erik</p>
+                <p class="lead rise d2 rule-top" style="color:var(--ink)">Erik Santos e Felipe Cruz</p>
             </div>
             <div class="stage rise d2" id="capa-stage" aria-hidden="true"></div>
         </div>
         <aside class="notes">
             <p>Vou apresentar o artigo “Mercado de Capitais: Racionalidade versus Emoção”, de José Odálio dos Santos e José Augusto Rodrigues dos Santos, publicado em 2005 na Revista Contabilidade &amp; Finanças da USP.</p>
-            <p>A pergunta central do artigo é simples: o preço de uma ação é resultado de cálculo racional, ou também de emoção? As duas linhas ao lado representam essas duas visões.</p>
+            <p>A pergunta central do artigo é simples: o preço de uma ação é resultado de cálculo racional, ou também de emoção? A balança ao lado mostra essa dúvida: o cérebro, em azul, é a razão; o coração, em laranja, é a emoção. Vou manter essas cores até o fim: azul para a visão racional, laranja para a emocional.</p>
         </aside>
     </section>
 
@@ -254,7 +274,6 @@
     <section class="slide" data-title="Pergunta de abertura">
         <p class="kicker rise">Antes de começar</p>
         <p class="display rise d1">Se uma ação cai <span class="orange">10%</span> em um dia, a empresa ficou <span class="orange">10%</span> pior?</p>
-        <p class="lead rise d2">Guarde sua resposta. Vamos voltar a ela no final.</p>
         <aside class="notes">
             <p>Antes de entrar no artigo, uma pergunta para vocês: se uma ação cai 10% em um dia, a empresa ficou 10% pior?</p>
             <p>[Pausa. Deixar a sala responder. Pedir mãos levantadas: quem acha que sim, quem acha que não.]</p>
@@ -262,32 +281,16 @@
         </aside>
     </section>
 
-    <!-- 3. O ARTIGO E SEUS AUTORES -->
-    <section class="slide" data-title="O artigo e seus autores">
-        <p class="kicker rise">Contexto</p>
-        <h2 class="rise d1">O artigo e seus autores</h2>
-        <div class="cards cols-2">
-            <div class="card rise d1"><span class="label">Autores</span><p>José Odálio dos Santos (Prof. Dr., PUC-SP) e José Augusto Rodrigues dos Santos (mestrando, PUC-SP).</p></div>
-            <div class="card rise d2"><span class="label">Publicação</span><p>Revista Contabilidade &amp; Finanças, USP, n. 37, jan./abr. 2005, p. 103-110.</p></div>
-            <div class="card rise d3"><span class="label">Natureza</span><p>Revisão teórica, sem pesquisa empírica própria.</p></div>
-            <div class="card rise d4"><span class="label">Raízes do debate</span><p><span class="chip blue">Fama (1970)</span> de um lado; <span class="chip orange">Kahneman, Tversky e Thaler</span> do outro.</p></div>
-        </div>
-        <aside class="notes">
-            <p>Os autores são da PUC-SP: um professor doutor e um mestrando em Administração. O texto saiu em 2005, nas páginas 103 a 110 da revista.</p>
-            <p>É uma revisão teórica: não traz pesquisa empírica própria, reúne argumentos de outros autores.</p>
-            <p>O debate que o artigo resume tem duas raízes. Em azul, a hipótese dos mercados eficientes, formalizada por Eugene Fama em 1970. Em laranja, as finanças comportamentais, de Kahneman, Tversky e Thaler. Vou manter essas cores até o fim: azul para a visão racional, laranja para a emocional.</p>
-        </aside>
-    </section>
 
     <!-- 4. PARA QUE SERVE O MERCADO -->
     <section class="slide" data-title="Para que serve o mercado">
         <p class="kicker rise">Naik (2001)</p>
         <h2 class="rise d1">Para que serve o mercado</h2>
-        <div class="cards cols-4">
-            <div class="card rise d1"><span class="num">1</span><h3>Consumo no tempo</h3><p>A taxa de juros equilibra poupadores e tomadores.</p></div>
-            <div class="card rise d2"><span class="num">2</span><h3>Gestão de risco</h3><p>Diversificação e hedge.</p></div>
-            <div class="card rise d3"><span class="num">3</span><h3>Dono ≠ gestor</h3><p>Daí nasce a governança corporativa.</p></div>
-            <div class="card rise d4"><span class="num">4</span><h3>Avaliar a gestão</h3><p>O preço sinaliza aprovação.</p></div>
+        <div class="cards cols-2">
+            <div class="card rise d1"><span class="num">1</span><h3>Ligar quem poupa a quem precisa</h3><p>Quem tem dinheiro sobrando empresta; quem precisa, toma. Os juros fazem o acerto.</p></div>
+            <div class="card rise d2"><span class="num">2</span><h3>Dividir riscos</h3><p>Diversificar a carteira ou passar o risco adiante (hedge).</p></div>
+            <div class="card rise d3"><span class="num">3</span><h3>Separar dono e gestor</h3><p>O acionista investe sem precisar administrar a empresa.</p></div>
+            <div class="card rise d4"><span class="num">4</span><h3>Avaliar os gestores</h3><p>Se o mercado aprova as decisões da empresa, o preço da ação mostra isso.</p></div>
         </div>
         <aside class="notes">
             <p>O artigo começa explicando para que serve o mercado financeiro, a partir de Naik (2001). São quatro funções.</p>
@@ -313,17 +316,26 @@
     <section class="slide" data-title="Mercados eficientes">
         <p class="kicker rise"><span class="blue">Visão racional</span></p>
         <h2 class="rise d1">A hipótese dos mercados eficientes</h2>
-        <div class="pull rise d2">
-            <p class="quote">Os preços refletem as informações disponíveis; não há como obter lucros extraordinários com elas.</p>
-            <p class="source">Paráfrase de Ross (2002)</p>
-        </div>
-        <div class="cards cols-2">
-            <div class="card is-blue rise d3"><span class="label">Passeio aleatório</span><p>Os preços seguem um passeio aleatório: o passado não garante o futuro.</p></div>
-            <div class="card rise d4"><span class="label">Origem</span><p>A formulação clássica é de Eugene Fama (1970), que não aparece nas referências do artigo.</p></div>
+        <div class="split">
+            <div class="stack">
+                <div class="pull rise d2">
+                    <p class="quote">Os preços refletem as informações disponíveis; não há como obter lucros extraordinários com elas.</p>
+                    <p class="source">Paráfrase de Ross (2002)</p>
+                </div>
+                <div class="facts rise d3">
+                    <div class="fact"><span class="label blue">Passeio aleatório</span><p>Os preços seguem um passeio aleatório: o passado não garante o futuro.</p></div>
+                    <div class="fact"><span class="label">Origem</span><p>A formulação clássica é de Eugene Fama (1970), que não aparece nas referências do artigo.</p></div>
+                </div>
+            </div>
+            <div class="card is-blue rise d2">
+                <span class="label">Notícia nova, preço novo</span>
+                <div class="stage" id="hme-stage" aria-hidden="true"></div>
+                <p class="small">Ilustração, sem dados reais.</p>
+            </div>
         </div>
         <aside class="notes">
             <p>O primeiro lado do debate é a hipótese dos mercados eficientes. A definição que os autores usam vem de Ross (2002): os preços refletem as informações disponíveis, e por isso não dá para obter lucros extraordinários usando essas informações.</p>
-            <p>A consequência é que os preços seguem um passeio aleatório, o random walk: só mudam quando surge informação nova, então o desempenho passado não garante o futuro.</p>
+            <p>A consequência é que os preços seguem um passeio aleatório, o random walk: só mudam quando surge informação nova, então o desempenho passado não garante o futuro. No gráfico, cada salto acontece quando chega uma notícia; entre uma notícia e outra, o preço só oscila, sem padrão.</p>
             <p>Um detalhe: a formulação clássica dessa teoria é de Eugene Fama, de 1970, e Fama não aparece nas referências do artigo. Volto a isso quando falar dos limites.</p>
         </aside>
     </section>
@@ -334,15 +346,15 @@
         <h2 class="rise d1">Três graus de eficiência</h2>
         <div>
             <div class="steps">
-                <div class="step"><h3>Fraca</h3><p>O preço incorpora o histórico passado.</p></div>
-                <div class="step"><h3>Semiforte</h3><p>O preço incorpora toda a informação pública.</p></div>
-                <div class="step"><h3>Forte</h3><p>O preço incorpora toda a informação, pública ou privada.</p></div>
+                <div class="step"><h3>Fraca</h3><p>O preço incorpora o histórico passado.</p><div class="ichips"><span class="ichip c1">histórico</span></div></div>
+                <div class="step"><h3>Semiforte</h3><p>O preço incorpora toda a informação pública.</p><div class="ichips"><span class="ichip c1">histórico</span><span class="ichip c2">público</span></div></div>
+                <div class="step"><h3>Forte</h3><p>O preço incorpora toda a informação, pública ou privada.</p><div class="ichips"><span class="ichip c1">histórico</span><span class="ichip c2">público</span><span class="ichip c3">privado</span></div></div>
             </div>
             <div class="steps-base"></div>
         </div>
         <p class="small rise d3">Cada grau engloba o anterior.</p>
         <aside class="notes">
-            <p>A eficiência tem três graus, e cada um engloba o anterior.</p>
+            <p>A eficiência tem três graus, e cada um engloba o anterior. As etiquetas que caem em cada degrau mostram que tipo de informação já está no preço.</p>
             <p>Na forma fraca, o preço já incorpora o histórico passado, como as demonstrações do período encerrado. Olhar preços antigos não dá vantagem.</p>
             <p>Na semiforte, o preço incorpora toda a informação pública: muda logo depois do anúncio de uma notícia.</p>
             <p>Na forte, incorpora toda a informação, pública ou privada.</p>
@@ -368,25 +380,6 @@
         </aside>
     </section>
 
-    <!-- 9. EXEMPLO: DIVIDENDOS SUSPENSOS -->
-    <section class="slide" data-title="Dividendos suspensos">
-        <p class="kicker rise"><span class="blue">Visão racional</span> · Exemplo</p>
-        <h2 class="rise d1">Dividendos suspensos</h2>
-        <div class="timeline">
-            <div class="tl-item rise d1"><span class="tl-dot"></span><span class="tl-day">Dia −1</span><p>O mercado antecipa.</p></div>
-            <div class="tl-item hot rise d2"><span class="tl-dot"></span><span class="tl-day">Dia 0</span><p>Anúncio e oscilação forte.</p></div>
-            <div class="tl-item rise d3"><span class="tl-dot"></span><span class="tl-day">Dia +1</span><p>O preço estabiliza.</p></div>
-        </div>
-        <div class="pull rise d4">
-            <p class="quote">A notícia já estava precificada.</p>
-            <p class="source">Szewczyk et al. (1997), citado em Ross (2002)</p>
-        </div>
-        <aside class="notes">
-            <p>Um exemplo que os autores usam a favor da teoria: empresas que anunciam a suspensão de dividendos.</p>
-            <p>No dia anterior ao anúncio, o mercado já antecipa e o preço cai. No dia do anúncio, há oscilação forte, inclusive pela arbitragem. A partir do dia seguinte, o preço estabiliza num novo patamar.</p>
-            <p>Ou seja: quando a notícia saiu, ela já estava no preço. O estudo é de Szewczyk e coautores, de 1997, citado em Ross.</p>
-        </aside>
-    </section>
 
     <!-- 10. CONHEÇA O SR. MERCADO -->
     <section class="slide dark" data-title="Conheça o Sr. Mercado">
@@ -395,7 +388,6 @@
                 <p class="kicker rise">Benjamin Graham · O Investidor Inteligente (1949)</p>
                 <h2 class="rise d1">Conheça o <span class="orange">Sr. Mercado</span></h2>
                 <p class="lead rise d2">Ele é seu sócio num negócio. Todo dia oferece um preço: compra a sua parte ou vende a dele.</p>
-                <p class="quote rise d3">O humor dele muda todo dia. O negócio, não.</p>
             </div>
             <div class="stack rise d2">
                 <div class="stage" id="mercado-stage" aria-hidden="true"></div>
@@ -706,7 +698,7 @@
     <section class="slide dark" data-title="Encerramento">
         <h1 class="rise" style="font-size:calc(var(--fs-h1) * 1.25)">Obrigado.</h1>
         <p class="display rise d1 orange" style="font-weight:400">Perguntas?</p>
-        <p class="small rise d2 rule-top" style="border-color: rgba(245,239,227,0.16)">Felipe Cruz e Erik · Mercado de Capitais: Racionalidade versus Emoção</p>
+        <p class="small rise d2 rule-top" style="border-color: rgba(245,239,227,0.16)">Erik Santos e Felipe Cruz · Mercado de Capitais: Racionalidade versus Emoção</p>
         <aside class="notes">
             <p>Obrigado pela atenção. Fico à disposição para perguntas.</p>
         </aside>
@@ -725,7 +717,7 @@
     <script>
         document.documentElement.classList.add('js');
         const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-        const C = { blue: css('--blue'), orange: css('--orange'), cream: css('--cream'), orangeDark: css('--orange-on-dark'), rule: css('--rule') };
+        const C = { navy: css('--navy'), blue: css('--blue'), orange: css('--orange'), cream: css('--cream'), orangeDark: css('--orange-on-dark'), rule: css('--rule') };
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         function rng(seed) { return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
 
@@ -799,35 +791,95 @@
             }
         });
 
-        // ---------- Capa: duas leituras do mesmo preço ----------
+        // ---------- Capa: cérebro e coração numa balança indecisa (loop) ----------
         (function () {
-            const W = 640, H = 360, N = 90;
+            const W = 640, H = 420, cx = 320, pivotY = 120, arm = 205, hang = 120;
+            const BRAIN = ['M12 18V5', 'M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4', 'M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5',
+                'M17.997 5.125a4 4 0 0 1 2.526 5.77', 'M18 18a4 4 0 0 0 2-7.464', 'M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517',
+                'M6 18a4 4 0 0 1-2-7.464', 'M6.003 5.125a4 4 0 0 0-2.526 5.77'];
+            const HEART = ['M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5'];
             const svg = d3.select('#capa-stage').append('svg').attr('viewBox', `0 0 ${W} ${H}`);
-            const x = d3.scaleLinear().domain([0, N - 1]).range([10, W - 10]);
-            const r = rng(9);
-            const base = d3.range(N).map(i => 230 - i * 1.3);
-            const noisy = base.map((b, i) => b + Math.sin(i / 3.1) * 24 + (r() - 0.5) * 32);
-            svg.append('line').attr('x1', 10).attr('x2', W - 10).attr('y1', H - 16).attr('y2', H - 16).attr('stroke', C.rule);
-            const line = d3.line().x((d, i) => x(i)).y(d => d).curve(d3.curveMonotoneX);
-            const pOrange = svg.append('path').attr('d', line(noisy)).attr('fill', 'none').attr('stroke', C.orange).attr('stroke-width', 2.2);
-            const pBlue = svg.append('path').attr('d', line(base)).attr('fill', 'none').attr('stroke', C.blue).attr('stroke-width', 3.2);
             const serif = "'Source Serif 4', Georgia, serif";
-            svg.append('text').text('razão').attr('x', W - 10).attr('text-anchor', 'end').attr('y', d3.min(noisy.slice(-18)) - 22).attr('fill', C.blue)
-                .attr('font-family', serif).attr('font-size', 24).attr('font-weight', 600);
-            svg.append('text').text('emoção').attr('x', W - 10).attr('text-anchor', 'end').attr('y', d3.max(noisy.slice(-18)) + 38).attr('fill', C.orange)
-                .attr('font-family', serif).attr('font-size', 24).attr('font-weight', 600);
-            // um ponto percorre cada linha: o azul em ritmo constante, o laranja aos trancos
-            const dots = [[pBlue, C.blue, 5.5], [pOrange, C.orange, 4.5]].map(([p, c, rad]) =>
-                ({ p, L: p.node().getTotalLength(), el: svg.append('circle').attr('r', rad).attr('fill', c) }));
+
+            // base e coluna
+            svg.append('path').attr('d', `M${cx - 70},${H - 24} L${cx + 70},${H - 24} L${cx + 26},${H - 46} L${cx - 26},${H - 46} Z`).attr('fill', C.navy);
+            svg.append('line').attr('x1', cx).attr('x2', cx).attr('y1', pivotY).attr('y2', H - 46).attr('stroke', C.navy).attr('stroke-width', 5);
+            const q = svg.append('text').text('?').attr('x', cx).attr('y', pivotY - 34).attr('text-anchor', 'middle')
+                .attr('font-family', serif).attr('font-size', 64).attr('font-weight', 600).attr('fill', C.navy);
+            const beam = svg.append('line').attr('stroke', C.navy).attr('stroke-width', 5).attr('stroke-linecap', 'round');
+            svg.append('circle').attr('cx', cx).attr('cy', pivotY).attr('r', 9).attr('fill', C.navy);
+
+            function pan(paths, color, soft, label) {
+                const g = svg.append('g');
+                g.append('line').attr('class', 'c1').attr('stroke', C.rule).attr('stroke-width', 1.6);
+                g.append('line').attr('class', 'c2').attr('stroke', C.rule).attr('stroke-width', 1.6);
+                const body = g.append('g').attr('class', 'body');
+                body.append('path').attr('d', 'M-74,0 Q0,30 74,0 Z').attr('fill', soft).attr('stroke', color).attr('stroke-width', 2);
+                const icon = body.append('g').attr('class', 'icon');
+                icon.append('circle').attr('r', 46).attr('cy', -50).attr('fill', soft);
+                const ig = icon.append('g').attr('transform', 'translate(0,-50) scale(3.1) translate(-12,-12)')
+                    .attr('fill', 'none').attr('stroke', color).attr('stroke-width', 1.7).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+                paths.forEach(d => ig.append('path').attr('d', d));
+                body.append('text').text(label).attr('y', 42).attr('text-anchor', 'middle').attr('fill', color)
+                    .attr('font-family', serif).attr('font-size', 22).attr('font-weight', 600);
+                return g;
+            }
+            const left = pan(BRAIN, C.blue, css('--blue-soft'), 'razão');
+            const right = pan(HEART, C.orange, css('--orange-soft'), 'emoção');
+
             function frame(t) {
-                const u = (t % 9000) / 9000;
-                dots.forEach((d, k) => {
-                    const v = k === 0 ? u : Math.min(1, Math.max(0, u + Math.sin(u * 40) * 0.025));
-                    const pt = d.p.node().getPointAtLength(v * d.L);
-                    d.el.attr('cx', pt.x).attr('cy', pt.y);
+                const ang = Math.sin(t / 1500) * 0.16 + Math.sin(t / 610) * 0.04;
+                const dx = Math.cos(ang) * arm, dy = Math.sin(ang) * arm;
+                beam.attr('x1', cx - dx).attr('y1', pivotY - dy).attr('x2', cx + dx).attr('y2', pivotY + dy);
+                [[left, cx - dx, pivotY - dy, -ang], [right, cx + dx, pivotY + dy, ang]].forEach(([g, px, py, w]) => {
+                    g.select('.c1').attr('x1', px).attr('y1', py).attr('x2', px - 64).attr('y2', py + hang);
+                    g.select('.c2').attr('x1', px).attr('y1', py).attr('x2', px + 64).attr('y2', py + hang);
+                    g.select('.body').attr('transform', `translate(${px},${py + hang})`);
+                    g.select('.icon').attr('transform', `scale(${1 + Math.max(0, w) * 0.6})`);
+                });
+                q.attr('opacity', 0.55 + 0.45 * Math.abs(Math.sin(t / 900)));
+            }
+            frame(0);
+            if (!reduced) d3.timer(frame);
+        })();
+
+        // ---------- Mercados eficientes: notícia nova, preço novo (loop) ----------
+        (function () {
+            const W = 640, H = 360, N = 110, PAD = 16;
+            const svg = d3.select('#hme-stage').append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+            const r = rng(23);
+            const NEWS = [28, 62, 90];
+            const vals = [0];
+            for (let i = 1; i < N; i++) {
+                let v = vals[i - 1] + (r() - 0.5) * 3;
+                if (i === NEWS[0]) v += 16; if (i === NEWS[1]) v -= 22; if (i === NEWS[2]) v += 19;
+                vals.push(v);
+            }
+            const x = d3.scaleLinear().domain([0, N - 1]).range([PAD, W - PAD]);
+            const y = d3.scaleLinear().domain(d3.extent(vals)).nice().range([H - 40, 60]);
+            svg.append('line').attr('x1', PAD).attr('x2', W - PAD).attr('y1', H - 20).attr('y2', H - 20).attr('stroke', C.rule);
+            const marks = NEWS.map(i => {
+                const g = svg.append('g').attr('transform', `translate(${x(i)},0)`);
+                g.append('line').attr('y1', 34).attr('y2', H - 20).attr('stroke', C.blue).attr('stroke-dasharray', '3 5').attr('stroke-opacity', 0.45);
+                const t = g.append('text').text('notícia').attr('y', 26).attr('text-anchor', 'middle').attr('fill', C.blue)
+                    .attr('font-size', 15).attr('font-weight', 600).attr('font-family', 'Inter, sans-serif');
+                return { i, t };
+            });
+            const path = svg.append('path').attr('d', d3.line().x((d, i) => x(i)).y(d => y(d))(vals))
+                .attr('fill', 'none').attr('stroke', C.blue).attr('stroke-width', 3);
+            const dot = svg.append('circle').attr('r', 7).attr('fill', C.blue);
+            const halo = svg.append('circle').attr('r', 7).attr('fill', 'none').attr('stroke', C.blue).attr('opacity', 0);
+            function frame(t) {
+                const u = (t % 8000) / 8000, k = Math.min(N - 1, Math.floor(u * N));
+                dot.attr('cx', x(k)).attr('cy', y(vals[k]));
+                marks.forEach(m => {
+                    const near = k >= m.i && k < m.i + 6;
+                    m.t.attr('opacity', near ? 1 : 0.45);
+                    if (k === m.i) halo.attr('cx', x(k)).attr('cy', y(vals[k])).attr('r', 7).attr('opacity', 0.8)
+                        .transition().duration(700).attr('r', 26).attr('opacity', 0);
                 });
             }
-            frame(8999);
+            frame(N * 80);
             if (!reduced) d3.timer(frame);
         })();
 
