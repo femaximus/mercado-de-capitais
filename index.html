@@ -164,29 +164,21 @@
         .step:nth-child(3) { height: 100%; background: var(--blue); }
         .step h3 { color: #fff; }
         .step p { font-size: var(--fs-body); line-height: 1.4; color: rgba(255, 255, 255, 0.92); }
-        /* Iluminação: um feixe de luz cruza cada degrau quando a nova informação chega
+        /* Intensidade: o azul de cada degrau fica mais forte quando a nova informação chega
            (mesmo ciclo de 8s das etiquetas: Fraca em 0s, Semiforte em 1,76s, Forte em 3,52s) */
-        .step { position: relative; overflow: hidden; isolation: isolate; }
+        .step { position: relative; isolation: isolate; animation: step-halo 8s ease-in-out infinite; }
         .step > * { position: relative; z-index: 1; }
-        .step::before {
-            content: ''; position: absolute; top: -20%; bottom: -20%; left: 0; width: 55%; z-index: 0;
-            background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0.38) 50%, rgba(255, 255, 255, 0) 80%, transparent 100%);
-            transform: translateX(-130%) skewX(-12deg);
-            animation: step-shine 8s ease-in-out infinite;
-            pointer-events: none;
-        }
         .step::after {
             content: ''; position: absolute; inset: 0; z-index: 0; border-radius: inherit; pointer-events: none;
-            box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0);
-            animation: step-glow 8s ease-in-out infinite;
+            background: #17457E; opacity: 0;
+            animation: step-deepen 8s ease-in-out infinite;
         }
-        .step:nth-child(2)::before, .step:nth-child(2)::after { animation-delay: 1.76s; }
-        .step:nth-child(3)::before, .step:nth-child(3)::after { animation-delay: 3.52s; }
-        @keyframes step-shine { 0% { transform: translateX(-130%) skewX(-12deg); } 14%, 100% { transform: translateX(260%) skewX(-12deg); } }
-        @keyframes step-glow {
-            0%, 100% { box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0); filter: none; }
-            6% { box-shadow: inset 0 0 calc(var(--u) * 3) rgba(255, 255, 255, 0.35); }
-            18% { box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0); }
+        .step:nth-child(2), .step:nth-child(2)::after { animation-delay: 1.76s; }
+        .step:nth-child(3), .step:nth-child(3)::after { animation-delay: 3.52s; }
+        @keyframes step-deepen { 0%, 100% { opacity: 0; } 8%, 34% { opacity: 0.85; } 50% { opacity: 0; } }
+        @keyframes step-halo {
+            0%, 50%, 100% { box-shadow: 0 0 0 0 rgba(44, 102, 168, 0); }
+            8%, 34% { box-shadow: 0 calc(var(--u) * 0.6) calc(var(--u) * 3) rgba(23, 69, 126, 0.35); }
         }
         .steps-base { height: 3px; background: var(--navy); margin-top: -1px; }
 
@@ -249,7 +241,7 @@
             html { scroll-behavior: auto; }
             .rise, .step { transition: none !important; opacity: 1 !important; transform: none !important; }
             .ichip { animation: none !important; opacity: 1 !important; }
-            .step::before, .step::after { animation: none !important; display: none; }
+            .step, .step::after { animation: none !important; }
         }
 
         /* ---------- Celular em pé: os slides viram uma página que rola ---------- */
